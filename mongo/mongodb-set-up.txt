@@ -1,0 +1,86 @@
+
+wnload and install mongo
+ -- Ubuntu 16.04 ---
+1.Adding the MongoDB Repository
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
+2.Next, we have to add the MongoDB repository details so apt will know where to download the packages from.
+Issue the following command to create a list file for MongoDB.
+
+  echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
+3.Update the packages list.
+sudo apt-get update
+4. install mongo
+sudo apt-get install -y mongodb-org
+5. start mongo
+sudo systemctl start mongod
+6.check status
+sudo systemctl status mongod
+
+7.make it start on system startup
+sudo systemctl enable mongod
+8. allow access from specified ip 
+sudo ufw allow from your_other_server_ip/32 to any port 27017
+
+---Centos 7 -----------
+1.Adding the MongoDB Repository
+sudo vi /etc/yum.repos.d/mongodb-org.repo
+/*
+Then, visit the Install on Red Hat section of MongoDB’s documentation and add the repository information for the latest stable release to the file:
+
+/
+etc/yum.repos.d/mongodb-org.repo
+[mongodb-org-3.4]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc
+*/
+2. Verify that the MongoDB repository exists within the yum utility. 
+yum repolist
+
+3. install mongo
+sudo yum install mongodb-org
+4. start mongo
+sudo systemctl start mongod
+5.check status
+sudo systemctl status mongod
+6. stop mongodb
+sudo systemctl stop mongod
+7. Logs
+sudo tail /var/log/mongodb/mongod.log
+8. Set limits
+/
+
+Note: When you launched the MongoDB Shell you may have seen a warning like this:
+
+** WARNING: soft rlimits too low. rlimits set to 4096 processes, 64000 files. Number of processes should be at least 32000 : 0.5 times number of files.
+
+MongoDB is a threaded application. It can launch additional processes to handle its workload. The warning states that for MongoDB to be most effective the number of processes that it is authorized to spin up should be half that of the number of files that it can have open at any given time. To resolve the warning, alter the processes soft rlimit value for mongod by editing the 20-nproc.conf file:
+
+sudo vi /etc/security/limits.d/20-nproc.conf
+Add the following line to the end of file:
+
+/etc/security/limits.d/20-nproc.conf
+. . .
+mongod soft nproc 32000
+For the new limit to be available to MongoDB, restart it using the systemctl utility:
+
+sudo systemctl restart mongod
+Afterward, when you connect to the MongoDB Shell, the warning should cease to exist.
+
+9. Start with system
+--check--
+systemctl is-enabled mongod; echo $?
+--efect--
+sudo systemctl enable mongod
+Mongo commands
+
+start shell;
+mongo
+
+import dataset 
+mongoimport --db test --collection restaurants --file primer-dataset.json 
+
+
+

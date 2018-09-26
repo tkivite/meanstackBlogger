@@ -8,3 +8,11 @@ This is a demo project using Mean Stack. The application uses the following tech
 4. Angular6
 
 The application has the following features:
+1. Mongo Database
+2. Swagger API browser and editor
+    The swagger nodejs project:                          npm install -g swagger
+    Create the project:                                  swagger project create menstackblogger
+    Edit APis on browser (navigate inside project):      swagger project edit
+    Write controller for each API                        /apis/controllers
+
+3. Mongoose
