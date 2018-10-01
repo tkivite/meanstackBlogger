@@ -52,32 +52,31 @@ paths:
     /member:
         x-swagger-router-controller: member
         get:
-            operationId: getMembers
+            operationId: getAll
             description: 'get the members list'
             responses: {'200': {description: Success, schema: {$ref: '#/definitions/GetMembersListResponse'}}, default: {description: Error, schema: {$ref: '#/definitions/ErrorResponse'}}}
         post:
-            operationId: saveMember
-            description: 'add a new member'
-            parameters: [{name: member, description: 'Member properties', in: body, required: true, schema: {$ref: '#/definitions/Member'}}]
-            responses: {'200': {description: Success, schema: {$ref: '#/definitions/SaveMemberResponse'}}, default: {description: Error, schema: {$ref: '#/definitions/ErrorResponse'}}}
+            operationId: save
+            description: 'add a new member to the list'
+            parameters: [{name: firstName, description: 'Member properties', in: body, required: true, schema: {$ref: '#/definitions/Member'}}]
+            responses: {'200': {description: Success, schema: {$ref: '#/definitions/GeneralResponse'}}, default: {description: Error, schema: {$ref: '#/definitions/ErrorResponse'}}}
     '/member/{id}':
         x-swagger-router-controller: member
         get:
-            operationId: getMember
+            operationId: getOne
             description: 'get a member'
             parameters: [{name: id, type: string, in: path, required: true}]
             responses: {'200': {description: Success, schema: {$ref: '#/definitions/GetMemberResponse'}}, default: {description: Error, schema: {$ref: '#/definitions/ErrorResponse'}}}
         put:
-            operationId: updateMember
+            operationId: update
             description: 'update a member'
-            parameters: [{name: id, description: 'Member id', type: string, in: path, required: true}, {name: member, description: 'Member properties', in: body, required: true, schema: {$ref: '#/definitions/Member'}}]
-            responses: {'200': {description: Success, schema: {$ref: '#/definitions/GetMemberResponse'}}, default: {description: Error, schema: {$ref: '#/definitions/ErrorResponse'}}}
+            parameters: [{name: id, description: 'Member id', type: string, in: path, required: true}, {name: firstName, description: 'Member properties', in: body, required: true, schema: {$ref: '#/definitions/Member'}}]
+            responses: {'200': {description: Success, schema: {$ref: '#/definitions/GeneralResponse'}}, default: {description: Error, schema: {$ref: '#/definitions/ErrorResponse'}}}
         delete:
             operationId: delMember
             description: 'delete a member'
             parameters: [{name: id, description: 'Member id', type: string, in: path, required: true}]
             responses: {'200': {description: Success, schema: {$ref: '#/definitions/GeneralResponse'}}, default: {description: Error, schema: {$ref: '#/definitions/ErrorResponse'}}}
-
 definitions:
     HelloWorldResponse:
         required:
@@ -119,22 +118,29 @@ definitions:
             id: {type: string}
             title: {type: string}
             year: {type: number}
+
+    GetMemberResponse:   
+        required:
+            - id
+            - firstName
+            - lastName
+            - middleName
+            - nationalId
+            - email
+            - phoneNumber
+        properties:
+            id       :   {type: number}
+            firstName:   {type: string}
+            lastName:    {type: string}
+            middleName:  {type: string} 
+            nationalId:  {type: string}
+            email:       {type: string}
+            phoneNumber: {type: string}    
     GetMembersListResponse:
         required:
             - members
         properties:
-            members: {type: array, items: {type: object, properties: {id: {type: string}, firstName: {type: string}, lastName: {type: string}, middleName: {type: string}, dateOfBirth: {type: string}, nationalId: {type: string}, phoneNumber: {type: string}, email: {type: string}}}}
-    SaveMemberResponse:
-        required:
-            - memberadded
-        properties:
-            memberadded: {type: object, properties: {id: {type: string}, firstName: {type: string}, lastName: {type: string}, middleName: {type: string}, dateOfBirth: {type: string}, nationalId: {type: string}, phoneNumber: {type: string}, email: {type: string}}}
-    GetMemberResponse:
-        required:
-            - member
-        properties:
-            member: {type: object, properties: {id: {type: string}, firstName: {type: string}, lastName: {type: string}, middleName: {type: string}, dateOfBirth: {type: string}, nationalId: {type: string}, phoneNumber: {type: string}, email: {type: string}}}
-
+            members: {type: array, items: {type: object, properties: {id: {type: string},firstName: {type: string}, lastName: {type: string}, middleName: {type: string}, dateOfBirth: {type: string}, nationalId: {type: string}, phoneNumber: {type: string}, email: {type: string}}}}
     Member:
         type: object
         properties:
@@ -151,4 +157,4 @@ definitions:
             - middleName
             - nationalId
             - email
-            - phoneNumber        
+            - phoneNumber

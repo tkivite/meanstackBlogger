@@ -10,6 +10,7 @@
   "dependencies": {
     "crypto": "^1.0.1",
     "express": "^4.12.3",
+    "mongoose": "^5.2.17",
     "swagger-express-mw": "^0.1.0"
   },
   "devDependencies": {
